@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static Models.Course.printCourseInfo;
-
 public class Course extends ProperNoun {
     String classroom;
     List<Student> students;
@@ -170,7 +168,7 @@ public class Course extends ProperNoun {
 
         List<Course> courses = university.getCourses();
 
-        String name_course = null;
+        String name_course;
         for (Course course : courses) {
             name_course = course.getName();
             if (name_course.equalsIgnoreCase(entered_course_name)) {
@@ -291,7 +289,7 @@ public class Course extends ProperNoun {
         return entered_classroom;
     }
 
-    public static void listCoursesFromStudent(University university, Student student, Scanner scan){
+    public static void listCoursesFromStudent(University university, Student student){
         List<Course> courses = university.getCourses();
         int id = student.getId();
         String name_student = student.getName();
@@ -309,6 +307,5 @@ public class Course extends ProperNoun {
             }
         }
     }
-
 
 }

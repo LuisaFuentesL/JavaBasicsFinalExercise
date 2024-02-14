@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static Models.Course.printCourseInfo;
+
 public class Course extends ProperNoun {
     String classroom;
     List<Student> students;
@@ -24,11 +26,11 @@ public class Course extends ProperNoun {
         return name;
     }
 
-    public String getCourseroom() {
+    public String getClassroom() {
         return classroom;
     }
 
-    public void setCourseroom(String classroom) {
+    public void setClassroom(String classroom) {
         this.classroom = classroom;
     }
 
@@ -49,7 +51,7 @@ public class Course extends ProperNoun {
     }
 
 
-    public static List<Course> createCoursees(List<Student> students, List<Professor> professors) {
+    public static List<Course> createCourses(List<Student> students, List<Professor> professors) {
         Professor professor1=professors.get(0);
         Professor professor2=professors.get(1);
 
@@ -137,18 +139,7 @@ public class Course extends ProperNoun {
             for (Course course: courses ){
                 String name_course = course.getName();
                 if (name_course.equalsIgnoreCase(entered_course_name)){
-
-                    System.out.println("Assigned classroom: " + course.getCourseroom());
-
-                    String name_professor =course.getProfessor().getName();
-                    System.out.println("Course professor name: " + name_professor);
-
-                    List<Student> students = course.getStudents();
-                    System.out.println("Students names: ");
-                    for (Student student : students){
-                        String name_student = student.getName();
-                        System.out.println("- "+name_student);
-                    }
+                    printCourseInfo(course);
                     course_found = true;
                     break;
                 }
@@ -156,6 +147,20 @@ public class Course extends ProperNoun {
             if (!course_found) {
                 System.out.println("Course not found");
             }
+        }
+    }
+
+    public static void printCourseInfo(Course course){
+        System.out.println("Assigned classroom: " + course.getClassroom());
+
+        String name_professor =course.getProfessor().getName();
+        System.out.println("Course professor name: " + name_professor);
+
+        List<Student> students = course.getStudents();
+        System.out.println("Students names: ");
+        for (Student student : students){
+            String name_student = student.getName();
+            System.out.println("- "+name_student);
         }
     }
 
@@ -174,13 +179,11 @@ public class Course extends ProperNoun {
             }
         }
 
-        System.out.println(student.getName()+" has been added to the " + name_course + " class");
+        System.out.println(student.getName()+" has been added to the " + entered_course_name + " class");
 
     }
 
     public static void askForExistingCourse(University university, Student student, Scanner scan){
-
-
         boolean course_entered = false;
 
         while (!course_entered) {
@@ -218,7 +221,7 @@ public class Course extends ProperNoun {
     }
 
 
-    public static Course askForNewCourse(University university, Scanner scan){
+    public static void askForNewCourse(University university, Scanner scan){
 
         boolean course_entered = false;
 
@@ -250,20 +253,20 @@ public class Course extends ProperNoun {
             String classroom = askClassroom(entered_course_name,scan);
             Professor professor = Professor.askForProfessor(university, entered_course_name,scan);
             List<Student>students = Student.askForExistingStudents(university, entered_course_name, scan);
+
             if (classroom != null && professor != null){
 
                 Course course = new Course(entered_course_name,classroom,students,professor);
                 courses.add(course);
 
                 System.out.println("The class has been created correctly");
-                course_entered=true;
+                course_entered = true;
             }
 
             if (!course_entered){
                 System.out.println("Course not found");
             }
         }
-        return null;
     }
 
     public static String askClassroom(String entered_course_name, Scanner scan) {
@@ -287,4 +290,25 @@ public class Course extends ProperNoun {
         }
         return entered_classroom;
     }
+
+    public static void listCoursesFromStudent(University university, Student student, Scanner scan){
+        List<Course> courses = university.getCourses();
+        int id = student.getId();
+        String name_student = student.getName();
+        System.out.println("Classes in which "+name_student+" is included" );
+
+
+        for (Course course : courses) {
+            List<Student> students = course.getStudents();
+            for (Student student_registered : students){
+                int id_registered = student_registered.getId();
+                    if (id_registered == id){
+                        String course_name = course.getName();
+                        System.out.println("- "+course_name);
+                    }
+            }
+        }
+    }
+
+
 }

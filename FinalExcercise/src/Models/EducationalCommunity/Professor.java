@@ -92,7 +92,6 @@ public class Professor extends ProperNoun {
                 professor.setSalary(new_salary);
             }
         }
-
     }
 
     public static void printProfessors(University university){
@@ -154,5 +153,4 @@ public class Professor extends ProperNoun {
         return professor_rta;
     }
 
-    //public static addProfessorToCourse
 }

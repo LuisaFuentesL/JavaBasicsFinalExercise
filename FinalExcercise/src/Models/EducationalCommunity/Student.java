@@ -70,7 +70,7 @@ public class Student extends ProperNoun {
 
         while (!student_entered) {
 
-            System.out.println("Enter the name of student:");
+            System.out.println("Enter the name of the student:");
             scan = new Scanner(System.in);
             String student_name = scan.nextLine().trim();
 
@@ -109,15 +109,9 @@ public class Student extends ProperNoun {
     }
 
     public static List<Student> askForExistingStudents(University university, String entered_course_name, Scanner scan){
-        System.out.println("Here is a list of the existing students at the university:");
-        List<Student> students= university.getStudents();
-        for (Student student: students){
-            String name_student = student.getName();
-            int id_student = student.getId();
-            System.out.println(id_student + ". "+ name_student);
-        }
+        List<Student> students = printStudents(university);
 
-        System.out.println("Enter the identifier number of the students you want to add to the " + entered_course_name + " class followed by comas \n" +
+        System.out.println("Enter the bullet number of the student(s) you want to add to the " + entered_course_name + " class followed by comas \n" +
                 "e.g: 1,2,5,4");
         scan = new Scanner(System.in);
         String entered_ids = scan.nextLine().trim();
@@ -134,5 +128,53 @@ public class Student extends ProperNoun {
             }
         }
         return students_chosen;
+    }
+    
+    public static Student askForStudentName(University university, Scanner scan){
+        printStudents(university);
+
+        Student student = null;
+        boolean student_entered = false;
+
+        while (!student_entered) {
+
+            System.out.println("Enter the name of the student:");
+            scan = new Scanner(System.in);
+            String entered_student_name = scan.nextLine().trim();
+
+            if (entered_student_name.isEmpty()) {
+                System.out.println("Student name cannot be empty");
+                continue;
+            }
+
+            if (entered_student_name.matches("\\d+")) {
+                System.out.println("Student name cannot consist of only numbers");
+                continue;
+            }
+            
+            List<Student> students= university.getStudents();
+            for (Student student_registered: students) {
+                String name_student = student_registered.getName();
+                if (name_student.equalsIgnoreCase(entered_student_name)) {
+                    student=student_registered;
+                    student_entered = true;
+                }
+            }
+            
+        }
+        return student;
+
+
+    }
+
+    public static List<Student> printStudents(University university) {
+        System.out.println("Here is a list of the existing students at the university:");
+        List<Student> students = university.getStudents();
+        for (Student student : students) {
+            String name_student = student.getName();
+            int id_student = student.getId();
+            System.out.println(id_student + ". " + name_student);
+        }
+        return students;
     }
 }

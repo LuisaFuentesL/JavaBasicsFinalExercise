@@ -49,8 +49,8 @@ public class University extends ProperNoun {
     public static University createUniversity(){
         List<Student> students = Student.createStudents();
         List<Professor> professors = Professor.createProfessors();
-        List<Course> courses = Course.createCoursees(students, professors);
+        List<Course> courses = Course.createCourses(students, professors);
 
-        return new University("Globant Models.University",professors,students,courses);
+        return new University("Globant University",professors,students,courses);
     }
 }

@@ -178,7 +178,7 @@ public class Course extends ProperNoun {
 
     }
 
-    public static void askForCourse(University university, Student student, Scanner scan){
+    public static void askForExistingCourse(University university, Student student, Scanner scan){
 
 
         boolean course_entered = false;
@@ -215,5 +215,76 @@ public class Course extends ProperNoun {
             System.out.println("Course not found");
             }
         }
+    }
+
+
+    public static Course askForNewCourse(University university, Scanner scan){
+
+        boolean course_entered = false;
+
+        while (!course_entered) {
+
+            System.out.println("Enter the name of the course you want to create:");
+            scan = new Scanner(System.in);
+            String entered_course_name = scan.nextLine().trim();
+
+            if (entered_course_name.isEmpty()) {
+                System.out.println("Course name cannot be empty");
+                continue;
+            }
+
+            if (entered_course_name.matches("\\d+")) {
+                System.out.println("Course name cannot consist of only numbers");
+                continue;
+            }
+
+            List<Course> courses = university.getCourses();
+
+            for (Course course : courses) {
+                String name_course = course.getName();
+                if (name_course.equalsIgnoreCase(entered_course_name)) {
+                    System.out.println("Please enter a new course name, the one you entered is already registered");
+                }
+            }
+
+            String classroom = askClassroom(entered_course_name,scan);
+            Professor professor = Professor.askForProfessor(university, entered_course_name,scan);
+            List<Student>students = Student.askForExistingStudents(university, entered_course_name, scan);
+            if (classroom != null && professor != null){
+
+                Course course = new Course(entered_course_name,classroom,students,professor);
+                courses.add(course);
+
+                System.out.println("The class has been created correctly");
+                course_entered=true;
+            }
+
+            if (!course_entered){
+                System.out.println("Course not found");
+            }
+        }
+        return null;
+    }
+
+    public static String askClassroom(String entered_course_name, Scanner scan) {
+
+        boolean classroom_entered = false;
+
+        String entered_classroom = null;
+
+        while (!classroom_entered) {
+
+            System.out.println("Enter the name of the classroom you want to assign to the " + entered_course_name + " class:");
+            scan = new Scanner(System.in);
+            entered_classroom = scan.nextLine().trim();
+
+            if (entered_classroom.isEmpty()) {
+                System.out.println("Classroom name cannot be empty");
+                continue;
+            } else {
+                classroom_entered = true;
+            }
+        }
+        return entered_classroom;
     }
 }

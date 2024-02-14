@@ -2,7 +2,9 @@ package Models.EducationalCommunity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import Models.Course;
 import Models.University;
 import Utils.ProperNoun;
 
@@ -94,6 +96,8 @@ public class Professor extends ProperNoun {
     }
 
     public static void printProfessors(University university){
+        System.out.println("Here is a list of the existing professors at the university:");
+
         List<Professor> professors= university.getProfessors();
         for (Professor professor: professors){
 
@@ -112,5 +116,43 @@ public class Professor extends ProperNoun {
 
     }
 
+    public static Professor askForProfessor(University university, String entered_course_name, Scanner scan) {
+        boolean professor_entered = false;
+        Professor professor_rta = null;
 
+        while (!professor_entered) {
+            printProfessors(university);
+
+            System.out.println("Enter the name of the professor you want to add to teach " + entered_course_name+":");
+            scan = new Scanner(System.in);
+            String entered_professor_name = scan.nextLine().trim();
+
+            if (entered_professor_name.isEmpty()) {
+                System.out.println("Professor name cannot be empty");
+                continue;
+            }
+
+            if (entered_professor_name.matches("\\d+")) {
+                System.out.println("Professor name cannot consist of only numbers");
+                continue;
+            }
+
+            List<Professor> professors = university.getProfessors();
+
+            for (Professor professor : professors) {
+                String name_professor = professor.getName();
+                if (name_professor.equalsIgnoreCase(entered_professor_name)) {
+                    professor_rta = professor;
+                    professor_entered = true;
+                }
+
+            }
+            if (!professor_entered) {
+                System.out.println("Professor not found");
+            }
+        }
+        return professor_rta;
+    }
+
+    //public static addProfessorToCourse
 }

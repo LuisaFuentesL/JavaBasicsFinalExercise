@@ -1,4 +1,5 @@
 package Models.EducationalCommunity;
+import Models.University;
 import Utils.ProperNoun;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -105,5 +106,33 @@ public class Student extends ProperNoun {
             }
         }
         return student;
+    }
+
+    public static List<Student> askForExistingStudents(University university, String entered_course_name, Scanner scan){
+        System.out.println("Here is a list of the existing students at the university:");
+        List<Student> students= university.getStudents();
+        for (Student student: students){
+            String name_student = student.getName();
+            int id_student = student.getId();
+            System.out.println(id_student + ". "+ name_student);
+        }
+
+        System.out.println("Enter the identifier number of the students you want to add to the " + entered_course_name + " class followed by comas \n" +
+                "e.g: 1,2,5,4");
+        scan = new Scanner(System.in);
+        String entered_ids = scan.nextLine().trim();
+        List<String> ids_entered= List.of(entered_ids.split(","));
+
+        List<Student> students_chosen = new ArrayList<>();
+
+        for (Student student: students){
+            int id_student = student.getId();
+            for (String id: ids_entered) {
+                if (id_student == Integer.parseInt(id)) {
+                    students_chosen.add(student);
+                }
+            }
+        }
+        return students_chosen;
     }
 }

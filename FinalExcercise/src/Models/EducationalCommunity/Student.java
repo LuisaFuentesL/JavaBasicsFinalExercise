@@ -1,12 +1,12 @@
 package Models.EducationalCommunity;
 import Models.University;
-import Utils.ProperNoun;
+import Utils.ProperNounsManager;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Student extends ProperNoun {
+public class Student extends ProperNounsManager {
     private static int lastId = 0;
     int id;
     int age;
@@ -23,18 +23,6 @@ public class Student extends ProperNoun {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public static List<Student> createStudents() {

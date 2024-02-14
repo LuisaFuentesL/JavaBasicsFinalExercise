@@ -28,7 +28,7 @@ public class Main {
 
             switch (option) {
                 case 1:
-                    Professor.printProfessors(university);
+                    Professor.printInfo(university);
                     break;
 
                 case 2:

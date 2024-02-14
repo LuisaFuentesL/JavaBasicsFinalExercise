@@ -2,13 +2,13 @@ package Models;
 
 import Models.EducationalCommunity.Professor;
 import Models.EducationalCommunity.Student;
-import Utils.ProperNoun;
+import Utils.ProperNounsManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Course extends ProperNoun {
+public class Course extends ProperNounsManager {
     String classroom;
     List<Student> students;
     Professor professor;
@@ -28,26 +28,13 @@ public class Course extends ProperNoun {
         return classroom;
     }
 
-    public void setClassroom(String classroom) {
-        this.classroom = classroom;
-    }
-
     public List<Student> getStudents() {
         return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
     }
 
     public Professor getProfessor() {
         return professor;
     }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
-
 
     public static List<Course> createCourses(List<Student> students, List<Professor> professors) {
         Professor professor1=professors.get(0);
@@ -130,14 +117,14 @@ public class Course extends ProperNoun {
             }
 
             if (entered_course_name.matches("\\d+")) {
-                System.out.println("Course name cannot consist of only numbers.");
+                System.out.println("Course name cannot consist of only numbers");
                 continue;
             }
 
             for (Course course: courses ){
                 String name_course = course.getName();
                 if (name_course.equalsIgnoreCase(entered_course_name)){
-                    printCourseInfo(course);
+                    printInfo(course);
                     course_found = true;
                     break;
                 }
@@ -145,20 +132,6 @@ public class Course extends ProperNoun {
             if (!course_found) {
                 System.out.println("Course not found");
             }
-        }
-    }
-
-    public static void printCourseInfo(Course course){
-        System.out.println("Assigned classroom: " + course.getClassroom());
-
-        String name_professor =course.getProfessor().getName();
-        System.out.println("Course professor name: " + name_professor);
-
-        List<Student> students = course.getStudents();
-        System.out.println("Students names: ");
-        for (Student student : students){
-            String name_student = student.getName();
-            System.out.println("- "+name_student);
         }
     }
 
@@ -217,7 +190,6 @@ public class Course extends ProperNoun {
             }
         }
     }
-
 
     public static void askForNewCourse(University university, Scanner scan){
 
@@ -308,4 +280,19 @@ public class Course extends ProperNoun {
         }
     }
 
+    public static void printInfo(Object course) {
+        if (course instanceof Course) {
+            System.out.println("Assigned classroom: " + ((Course) course).getClassroom());
+
+            String name_professor = ((Course) course).getProfessor().getName();
+            System.out.println("Course professor name: " + name_professor);
+
+            List<Student> students = ((Course) course).getStudents();
+            System.out.println("Students names: ");
+            for (Student student : students){
+                String name_student = student.getName();
+                System.out.println("- "+name_student);
+            }
+        }
+    }
 }

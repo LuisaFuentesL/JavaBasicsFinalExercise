@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import Models.University;
-import Utils.ProperNoun;
+import Utils.ProperNounsManager;
 
-public class Professor extends ProperNoun {
+public class Professor extends ProperNounsManager {
     double salary;
     String jobModality;
     double activeHoursWeek;
@@ -44,24 +44,12 @@ public class Professor extends ProperNoun {
         return jobModality;
     }
 
-    public void setJobModality(String jobModality) {
-        this.jobModality = jobModality;
-    }
-
     public double getActiveHoursWeek() {
         return activeHoursWeek;
     }
 
-    public void setActiveHours(double activeHoursWeek) {
-        this.activeHoursWeek = activeHoursWeek;
-    }
-
     public int getExperienceYears() {
         return experienceYears;
-    }
-
-    public void setExperienceYears(int experienceYears) {
-        this.experienceYears = experienceYears;
     }
 
     public static List<Professor> createProfessors() {
@@ -93,33 +81,12 @@ public class Professor extends ProperNoun {
         }
     }
 
-    public static void printProfessors(University university){
-        System.out.println("Here is a list of the existing professors at the university:");
-
-        List<Professor> professors= university.getProfessors();
-        for (Professor professor: professors){
-
-            String name_professor = professor.getName();
-            String jobModality_professor = professor.getJobModality();
-            double salary_professor = professor.getSalary();
-            double hours_week_professor = professor.getActiveHoursWeek();
-            int experience_years_professor = professor.getExperienceYears();
-
-            System.out.println("Name: " + name_professor + ", Job Modality: " + jobModality_professor
-                    + ", Salary: " + salary_professor + ", Active hours per week: " + hours_week_professor
-                    + ", Experience years: " + experience_years_professor);
-
-
-        }
-
-    }
-
     public static Professor askForProfessor(University university, String entered_course_name, Scanner scan) {
         boolean professor_entered = false;
         Professor professor_rta = null;
 
         while (!professor_entered) {
-            printProfessors(university);
+            printInfo(university);
 
             System.out.println("Enter the name of the professor you want to add to teach " + entered_course_name+":");
             scan = new Scanner(System.in);
@@ -143,13 +110,32 @@ public class Professor extends ProperNoun {
                     professor_rta = professor;
                     professor_entered = true;
                 }
-
             }
             if (!professor_entered) {
                 System.out.println("Professor not found");
             }
         }
         return professor_rta;
+    }
+
+    public static void printInfo(Object university) {
+        if (university instanceof University) {
+            System.out.println("Here is a list of the existing professors at the university:");
+
+            List<Professor> professors= ((University) university).getProfessors();
+            for (Professor professor: professors){
+
+                String name_professor = professor.getName();
+                String jobModality_professor = professor.getJobModality();
+                double salary_professor = professor.getSalary();
+                double hours_week_professor = professor.getActiveHoursWeek();
+                int experience_years_professor = professor.getExperienceYears();
+
+                System.out.println("Name: " + name_professor + ", Job Modality: " + jobModality_professor
+                        + ", Salary: " + salary_professor + ", Active hours per week: " + hours_week_professor
+                        + ", Experience years: " + experience_years_professor);
+            }
+        }
     }
 
 }

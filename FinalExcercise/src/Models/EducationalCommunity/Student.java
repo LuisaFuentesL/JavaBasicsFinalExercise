@@ -1,12 +1,14 @@
 package Models.EducationalCommunity;
 import Models.University;
 import Utils.ProperNounsManager;
+import Utils.Questioner;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Student extends ProperNounsManager {
+public class Student extends ProperNounsManager implements Questioner {
     private static int lastId = 0;
     int id;
     int age;
@@ -99,7 +101,7 @@ public class Student extends ProperNounsManager {
     public static List<Student> askForExistingStudents(University university, String entered_course_name, Scanner scan){
         List<Student> students = printStudents(university);
 
-        System.out.println("Enter the bullet number of the student(s) you want to add to the " + entered_course_name + " class followed by comas \n" +
+        System.out.println("Enter the bullet number of the student(s) you want to add to the " + entered_course_name + " class followed by commas \n" +
                 "e.g: 1,2,5,4");
         scan = new Scanner(System.in);
         String entered_ids = scan.nextLine().trim();
@@ -117,43 +119,6 @@ public class Student extends ProperNounsManager {
         }
         return students_chosen;
     }
-    
-    public static Student askForStudentName(University university, Scanner scan){
-        printStudents(university);
-
-        Student student = null;
-        boolean student_entered = false;
-
-        while (!student_entered) {
-
-            System.out.println("Enter the name of the student:");
-            scan = new Scanner(System.in);
-            String entered_student_name = scan.nextLine().trim();
-
-            if (entered_student_name.isEmpty()) {
-                System.out.println("Student name cannot be empty");
-                continue;
-            }
-
-            if (entered_student_name.matches("\\d+")) {
-                System.out.println("Student name cannot consist of only numbers");
-                continue;
-            }
-            
-            List<Student> students= university.getStudents();
-            for (Student student_registered: students) {
-                String name_student = student_registered.getName();
-                if (name_student.equalsIgnoreCase(entered_student_name)) {
-                    student=student_registered;
-                    student_entered = true;
-                }
-            }
-            
-        }
-        return student;
-
-
-    }
 
     public static List<Student> printStudents(University university) {
         System.out.println("Here is a list of the existing students at the university:");
@@ -164,5 +129,43 @@ public class Student extends ProperNounsManager {
             System.out.println(id_student + ". " + name_student);
         }
         return students;
+    }
+
+    public static Object askForInfo(Object university, Scanner scan){
+        Student student = null;
+
+        if(university instanceof University){
+            printStudents((University) university);
+
+            boolean student_entered = false;
+
+            while (!student_entered) {
+
+                System.out.println("Enter the name of the student:");
+                scan = new Scanner(System.in);
+                String entered_student_name = scan.nextLine().trim();
+
+                if (entered_student_name.isEmpty()) {
+                    System.out.println("Student name cannot be empty");
+                    continue;
+                }
+
+                if (entered_student_name.matches("\\d+")) {
+                    System.out.println("Student name cannot consist of only numbers");
+                    continue;
+                }
+
+                List<Student> students= ((University) university).getStudents();
+                for (Student student_registered: students) {
+                    String name_student = student_registered.getName();
+                    if (name_student.equalsIgnoreCase(entered_student_name)) {
+                        student=student_registered;
+                        student_entered = true;
+                    }
+                }
+
+            }
+        }
+        return student;
     }
 }

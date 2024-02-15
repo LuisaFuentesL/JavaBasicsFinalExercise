@@ -34,7 +34,7 @@ public class Main {
                 case 2:
                     System.out.println("Classes names: " );
                     List<Course> courses = Course.printCourses(university, scan);
-                    Course.subMenu(courses, university, scan);
+                    Course.subMenu(courses, scan);
                     break;
 
                 case 3:
@@ -47,7 +47,7 @@ public class Main {
                     break;
 
                 case 5:
-                    Student student_required = Student.askForStudentName(university, scan);
+                    Student student_required = (Student) Student.askForInfo(university, scan);
                     Course.listCoursesFromStudent(university, student_required);
                     break;
 

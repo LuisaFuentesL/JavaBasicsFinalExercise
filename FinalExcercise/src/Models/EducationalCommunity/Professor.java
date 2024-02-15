@@ -55,7 +55,7 @@ public class Professor extends ProperNounsManager {
     public static List<Professor> createProfessors() {
         List<Professor> professors = new ArrayList<>();
 
-        Professor professor1 = new Professor("Francisco Pérez",BASE_SALARY,PART_TIME,25,0);
+        Professor professor1 = new Professor("Francisco Castillo",BASE_SALARY,PART_TIME,25,0);
         Professor professor2 = new Professor("Marina Ladino",BASE_SALARY,FULL_TIME,45,5);
 
         professors.add(professor1);

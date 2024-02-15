@@ -112,7 +112,7 @@ public class Student extends ProperNounsManager implements Questioner {
         for (Student student: students){
             int id_student = student.getId();
             for (String id: ids_entered) {
-                if (id_student == Integer.parseInt(id)) {
+                if (id_student == Integer.parseInt(id) && !students_chosen.contains(student)) {
                     students_chosen.add(student);
                 }
             }
@@ -141,24 +141,31 @@ public class Student extends ProperNounsManager implements Questioner {
 
             while (!student_entered) {
 
-                System.out.println("Enter the name of the student:");
+                System.out.println("Enter the bullet number of the student for whom you want to review the enrolled courses: ");
                 scan = new Scanner(System.in);
-                String entered_student_name = scan.nextLine().trim();
-
-                if (entered_student_name.isEmpty()) {
-                    System.out.println("Student name cannot be empty");
-                    continue;
-                }
-
-                if (entered_student_name.matches("\\d+")) {
-                    System.out.println("Student name cannot consist of only numbers");
-                    continue;
-                }
-
+                int entered_student_id ;
                 List<Student> students= ((University) university).getStudents();
+
+                try {
+                    entered_student_id = scan.nextInt();
+
+                    if (entered_student_id <= 0) {
+                        System.out.println("Student id must be greater than zero");
+                        continue;
+                    }
+                    if(entered_student_id>students.size()){
+                        System.out.println("Student not found");
+                        continue;
+                    }
+
+                } catch (InputMismatchException e) {
+                    System.out.println("Please enter an integer");
+                    continue;
+                }
+
                 for (Student student_registered: students) {
-                    String name_student = student_registered.getName();
-                    if (name_student.equalsIgnoreCase(entered_student_name)) {
+                    int id_student = student_registered.getId();
+                    if (id_student==entered_student_id) {
                         student=student_registered;
                         student_entered = true;
                     }

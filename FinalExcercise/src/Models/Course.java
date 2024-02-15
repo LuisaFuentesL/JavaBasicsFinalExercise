@@ -245,7 +245,7 @@ public class Course extends ProperNounsManager implements Questioner {
         List<Course> courses = university.getCourses();
         int id = student.getId();
         String name_student = student.getName();
-        System.out.println("Classes in which "+name_student+" is included" );
+        System.out.println("Classes in which "+name_student+" is included: " );
 
 
         for (Course course : courses) {

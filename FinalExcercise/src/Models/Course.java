@@ -3,12 +3,13 @@ package Models;
 import Models.EducationalCommunity.Professor;
 import Models.EducationalCommunity.Student;
 import Utils.ProperNounsManager;
+import Utils.Questioner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Course extends ProperNounsManager {
+public class Course extends ProperNounsManager implements Questioner {
     String classroom;
     List<Student> students;
     Professor professor;
@@ -102,7 +103,7 @@ public class Course extends ProperNounsManager {
 
     }
 
-    public static void subMenu(List<Course> courses, University university, Scanner scan){
+    public static void subMenu(List<Course> courses, Scanner scan){
 
         boolean course_found = false;
         while (!course_found) {
@@ -220,7 +221,7 @@ public class Course extends ProperNounsManager {
                 }
             }
 
-            String classroom = askClassroom(entered_course_name,scan);
+            String classroom = (String) askForInfo(entered_course_name, scan);
             Professor professor = Professor.askForProfessor(university, entered_course_name,scan);
             List<Student>students = Student.askForExistingStudents(university, entered_course_name, scan);
 
@@ -239,27 +240,6 @@ public class Course extends ProperNounsManager {
         }
     }
 
-    public static String askClassroom(String entered_course_name, Scanner scan) {
-
-        boolean classroom_entered = false;
-
-        String entered_classroom = null;
-
-        while (!classroom_entered) {
-
-            System.out.println("Enter the name of the classroom you want to assign to the " + entered_course_name + " class:");
-            scan = new Scanner(System.in);
-            entered_classroom = scan.nextLine().trim();
-
-            if (entered_classroom.isEmpty()) {
-                System.out.println("Classroom name cannot be empty");
-                continue;
-            } else {
-                classroom_entered = true;
-            }
-        }
-        return entered_classroom;
-    }
 
     public static void listCoursesFromStudent(University university, Student student){
         List<Course> courses = university.getCourses();
@@ -294,5 +274,31 @@ public class Course extends ProperNounsManager {
                 System.out.println("- "+name_student);
             }
         }
+    }
+
+
+    public static Object askForInfo(Object entered_course_name, Scanner scan) {
+        String entered_classroom = null;
+
+        if(entered_course_name instanceof String){
+            boolean classroom_entered = false;
+
+
+            while (!classroom_entered) {
+
+                System.out.println("Enter the name of the classroom you want to assign to the " + entered_course_name + " class:");
+                scan = new Scanner(System.in);
+                entered_classroom = scan.nextLine().trim();
+
+                if (entered_classroom.isEmpty()) {
+                    System.out.println("Classroom name cannot be empty");
+                    continue;
+                } else {
+                    classroom_entered = true;
+                }
+            }
+        }
+        return entered_classroom;
+
     }
 }
